@@ -18,6 +18,7 @@
             <list>
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>
@@ -31,13 +32,16 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -53,6 +57,16 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -74,8 +88,7 @@
                 <field name="date_availability"/>
 
                 <!-- Filters -->
-                <filter name="filter_available" string="Available"
-                    domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <filter name="filter_available" string="Available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <filter name="filter_sold" string="Sold" domain="[('selling_price', '>', 0)]"/>
 
                 <!-- Group By -->
@@ -83,6 +96,7 @@
                     <filter name="group_by_garden" string="Garden" context="{'group_by': 'garden'}"/>
                     <filter name="group_by_date_availability" string="Available Date" context="{'group_by': 'date_availability'}"/>
                     <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                    <filter name="property_type_id" string="Type" domain="[]" context="{'group_by': 'property_type_id'}"/>
                 </group>
             </search>
         </field>
