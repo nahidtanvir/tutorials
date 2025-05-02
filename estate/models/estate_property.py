@@ -35,7 +35,9 @@ class EstateProperty(models.Model):
         ],
         required=True,
         copy=False,
-        default='new'
+        default='new',
+        compute='_compute_state',
+        store=True,
     )
     property_type_id = fields.Many2one('estate.property.type')
     user_id = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True,
@@ -57,10 +59,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends('offer_ids')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price') or [0])
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -95,3 +97,11 @@ class EstateProperty(models.Model):
             min_allowed_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_allowed_price, precision_digits=2) == -1:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.depends('offer_ids.status')
+    def _compute_state(self):
+        for record in self:
+            if any(offer.status == 'accepted' for offer in record.offer_ids):
+                record.state = 'offer_accepted'
+            elif record.offer_ids:
+                record.state = 'offer_received'
