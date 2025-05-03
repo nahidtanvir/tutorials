@@ -21,20 +21,29 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <h1>
-                    <field name="name"/>
-                </h1>
-                <notebook>
-                    <page string="Description">
-                        <field name="property_ids">
-                            <list>
-                                <field name="name" string="Title"/>
-                                <field name="expected_price" string="Expected Price"/>
-                                <field name="state" string="Status"/>
-                            </list>
-                        </field>
-                    </page>
-                </notebook>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.action_estate_property_offer)d" type="action" class="oe_stat_button"
+                                icon="fa-money"
+                                context="{'search_default_property_type_id': True}">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page string="Description">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="state" string="Status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>

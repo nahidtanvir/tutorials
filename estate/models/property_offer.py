@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date, timedelta
 
 class PropertyOffer(models.Model):
@@ -28,6 +28,23 @@ class PropertyOffer(models.Model):
         ('check_price', 'CHECK(price > 0)', 'The price must be strictly positive'),
         ('check_validity', 'CHECK(validity > 0)', 'The validity must be strictly positive'),
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        new_price = vals.get('price', 0)
+
+        if property_id:
+            property = self.env['estate.property'].browse(property_id)
+
+            # Check if new offer is less than any existing offer
+            if any(o.price >= new_price for o in property.offer_ids):
+                raise ValidationError("New offer must be higher than existing offers.")
+
+            # Set property state to 'Offer Received'
+            property.state = 'offer_received'
+
+        return super().create(vals)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
