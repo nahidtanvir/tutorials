@@ -29,22 +29,23 @@ class PropertyOffer(models.Model):
         ('check_validity', 'CHECK(validity > 0)', 'The validity must be strictly positive'),
     ]
 
-    @api.model
-    def create(self, vals):
-        property_id = vals.get('property_id')
-        new_price = vals.get('price', 0)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            new_price = vals.get('price', 0)
 
-        if property_id:
-            property = self.env['estate.property'].browse(property_id)
+            if property_id:
+                property = self.env['estate.property'].browse(property_id)
 
-            # Check if new offer is less than any existing offer
-            if any(o.price >= new_price for o in property.offer_ids):
-                raise ValidationError("New offer must be higher than existing offers.")
+                # Check if new offer is less than any existing offer
+                if any(o.price >= new_price for o in property.offer_ids):
+                    raise ValidationError("New offer must be higher than existing offers.")
 
-            # Set property state to 'Offer Received'
-            property.state = 'offer_received'
+                # Set property state to 'Offer Received'
+                property.state = 'offer_received'
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
