@@ -61,21 +61,8 @@
 
                     <!-- Orders by Size Card -->
                     <DashboardItem size="2">
-                        <h5 class="card-title">Orders by Size</h5>
-                        <div class="d-flex justify-content-around">
-                            <div class="text-center">
-                                <div class="h4">S</div>
-                                <div><t t-esc="statistics.data.orders_by_size.s"/></div>
-                            </div>
-                            <div class="text-center">
-                                <div class="h4">M</div>
-                                <div><t t-esc="statistics.data.orders_by_size.m"/></div>
-                            </div>
-                            <div class="text-center">
-                                <div class="h4">XL</div>
-                                <div><t t-esc="statistics.data.orders_by_size.xl"/></div>
-                            </div>
-                        </div>
+                        <h5 class="card-title">T-Shirt Sizes Distribution</h5>
+                        <PieChart data="statistics.data.orders_by_size"/>
                     </DashboardItem>
                 </t>
             </div>
