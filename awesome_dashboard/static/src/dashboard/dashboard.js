@@ -3,15 +3,17 @@ import {registry} from "@web/core/registry";
 import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
 import {DashboardItem} from "./dashboard_item";
-import {PieChart} from "./pie_chart";
+// import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        // this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomerView() {

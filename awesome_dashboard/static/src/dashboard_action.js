@@ -8,6 +8,7 @@ export class DashboardActionLoader extends Component {
         <LazyComponent 
             bundle="'awesome_dashboard.dashboard'"
             Component="'AwesomeDashboard'"
+            props="props"
         />
     `;
 }
