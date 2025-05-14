@@ -9,10 +9,6 @@ export class PieChart extends Component {
     setup() {
         this.canvasRef = useRef("canvas");
         this.chart = null;
-        this.state = useState({
-            loading: true,
-            error: false
-        });
 
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         onMounted(() => {
