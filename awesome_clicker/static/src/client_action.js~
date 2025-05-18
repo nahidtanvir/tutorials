@@ -7,7 +7,7 @@ import { ClickerValue } from "./clicker_value";
 export class ClientAction extends Component {
     static template = xml`
         <div class="ms-1 mt-1">
-            <span>Clicks: <ClickerValue /></span>
+            <span>Clicks: <ClickerValue />
             <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.increment(9)">
                 Increment
             </button>
