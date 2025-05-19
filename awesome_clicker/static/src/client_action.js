@@ -29,7 +29,7 @@ export class ClientAction extends Component {
                 <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot">
                     <div t-if="bot_value.level lte this.clicker.level" class="card me-3">
                         <div class="card-header">
-                            <t t-esc="bot_value.purchased"/>x <t t-esc="bot"/> (<t t-esc="bot_value.increment *  * this.clicker.multiplier"/> clicks/10seconds)
+                            <t t-esc="bot_value.purchased"/>x <t t-esc="bot"/> (<t t-esc="bot_value.increment * this.clicker.multiplier"/> clicks/10seconds)
                             <i class="fa fa-android"></i>
                         </div>
                         <div class="card-body">
