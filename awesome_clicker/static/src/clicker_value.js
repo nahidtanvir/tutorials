@@ -4,7 +4,7 @@ import { useClicker } from "./clicker_hook";
 
 export class ClickerValue extends Component {
     static template = xml`
-        <span t-att-data-tooltip="this.clicker.state.clicks" t-esc="humanizedClicks"/>
+        <span t-att-data-tooltip="this.clicker.clicks" t-esc="humanizedClicks"/>
     `;
     static props = {};
 
@@ -13,7 +13,7 @@ export class ClickerValue extends Component {
     }
 
     get humanizedClicks() {
-        return humanNumber(this.clicker.state.clicks, {
+        return humanNumber(this.clicker.clicks, {
             decimals: 1,
         });
     }

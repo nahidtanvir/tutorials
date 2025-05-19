@@ -8,7 +8,7 @@ export class ClickerSystray extends Component {
     static template = xml`
         <div class="o_nav_entry d-flex gap-1">
             Clicks: <ClickerValue />
-            <button class="btn btn-secondary" t-on-click="() => this.clicker.increment(999)">
+            <button class="btn btn-secondary" t-on-click="() => this.clicker.increment(9)">
                 <i class="fa fa-lg fa-plus"></i>
             </button>
             <button class="btn btn-secondary" t-on-click="openClientAction">
