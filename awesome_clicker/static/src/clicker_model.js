@@ -6,12 +6,15 @@ export class ClickerModel extends Reactive {
         super();
         this.clicks = 0;
         this.level = 0;
-        this.clickBots = 0;
+        // this.clickBots = 0;
         this.bus = new EventBus();
+        // used to trigger events and increase level
         this.milestones = [
             { clicks: 1000, unlock: "clickBot" },
             { clicks: 5000, unlock: "bigBot" },
+            { clicks: 100000, unlock: "power multiplier" },
         ];
+        // used to calculate bot clicks every 10 seconds
         this.bots = {
             clickbot: {
                 price: 1000,
@@ -26,6 +29,7 @@ export class ClickerModel extends Reactive {
                 purchased: 0,
             }
         };
+        this.multiplier = 1;
     }
 
     addClick() {
@@ -39,7 +43,7 @@ export class ClickerModel extends Reactive {
     tick() {
         // this.clicks += this.clickBots * 10;
         for (const bot in this.bots) {
-            this.clicks += this.bots[bot].increment * this.bots[bot].purchased;
+            this.clicks += this.bots[bot].increment * this.bots[bot].purchased * this.multiplier;
         }
     }
 
@@ -77,5 +81,13 @@ export class ClickerModel extends Reactive {
 
         this.clicks -= this.bots[name].price;
         this.bots[name].purchased += 1;
+    }
+
+    buyMultiplier() {
+        if (this.clicks < 50000) {
+            return false;
+        }
+        this.clicks -= 50000;
+        this.multiplier++;
     }
 }

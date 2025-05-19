@@ -8,7 +8,7 @@ export class ClientAction extends Component {
     static template = xml`
         <div class="ms-1 mt-1">
             <span>Clicks: <ClickerValue /></span>
-            <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.increment(9)">
+            <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.increment(9999)">
                 Increment
             </button>
         </div>
@@ -29,7 +29,7 @@ export class ClientAction extends Component {
                 <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot">
                     <div t-if="bot_value.level lte this.clicker.level" class="card me-3">
                         <div class="card-header">
-                            <t t-esc="bot_value.purchased"/>x <t t-esc="bot"/> (<t t-esc="bot_value.increment"/> clicks/10seconds)
+                            <t t-esc="bot_value.purchased"/>x <t t-esc="bot"/> (<t t-esc="bot_value.increment *  * this.clicker.multiplier"/> clicks/10seconds)
                             <i class="fa fa-android"></i>
                         </div>
                         <div class="card-body">
@@ -39,6 +39,22 @@ export class ClientAction extends Component {
                         </div>
                     </div>
                 </t>
+            </div>
+            <div t-if="this.clicker.level >= 3" class="ms-1 mt-1">
+                <h2> Power multiplier </h2>
+                <div class="d-flex flex-row">
+                    <div class="card me-3">
+                        <div class="card-header">
+                            <t t-esc="this.clicker.multiplier"/>x
+                            <i class="fa fa-superpowers"></i>
+                        </div>
+                        <div class="card-body">
+                            <button t-on-click="() => this.clicker.buyMultiplier()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 50000">
+                                Buy Power Multiplier (50000 clicks)
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     `
