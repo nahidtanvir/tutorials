@@ -1,5 +1,7 @@
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "./click_rewards";
+import { choose } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -30,6 +32,24 @@ export class ClickerModel extends Reactive {
             }
         };
         this.multiplier = 1;
+        this.trees = {
+            pearTree: {
+                price: 1000000,
+                level: 4,
+                produce: "pear",
+                purchased: 0,
+            },
+            cherryTree: {
+                price: 1000000,
+                level: 4,
+                produce: "cherry",
+                purchased: 0,
+            },
+        }
+        this.fruits = {
+            pear: 0,
+            cherry: 0,
+        }
     }
 
     addClick() {
@@ -89,5 +109,19 @@ export class ClickerModel extends Reactive {
         }
         this.clicks -= 50000;
         this.multiplier++;
+    }
+
+    giveReward() {
+        const availableReward = [];
+        for (const reward of rewards) {
+            if (reward.minLevel <= this.level || !reward.minLevel) {
+                if (reward.maxLevel >= this.level || !reward.maxLevel) {
+                    availableReward.push(reward);
+                }
+            }
+        }
+        const reward = choose(availableReward);
+        this.bus.trigger("REWARD", reward);
+        return reward;
     }
 }
