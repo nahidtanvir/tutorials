@@ -15,6 +15,7 @@ export class ClickerModel extends Reactive {
             { clicks: 1000, unlock: "clickBot" },
             { clicks: 5000, unlock: "bigBot" },
             { clicks: 100000, unlock: "power multiplier" },
+            { clicks: 1000000, unlock: "pear tree & cherry tree" }
         ];
         // used to calculate bot clicks every 10 seconds
         this.bots = {
@@ -50,6 +51,7 @@ export class ClickerModel extends Reactive {
             pear: 0,
             cherry: 0,
         }
+        this.ticks = 0;
     }
 
     addClick() {
@@ -61,9 +63,14 @@ export class ClickerModel extends Reactive {
      * proper interval
      */
     tick() {
-        // this.clicks += this.clickBots * 10;
+        this.ticks += 1
         for (const bot in this.bots) {
             this.clicks += this.bots[bot].increment * this.bots[bot].purchased * this.multiplier;
+        }
+        if (this.ticks % 3 === 0) {
+            for (const tree in this.trees) {
+                this.fruits[this.trees[tree].produce] += this.trees[tree].purchased;
+            }
         }
     }
 
@@ -123,5 +130,29 @@ export class ClickerModel extends Reactive {
         const reward = choose(availableReward);
         this.bus.trigger("REWARD", reward);
         return reward;
+    }
+
+    buyTree(name) {
+        if (!Object.keys(this.trees).includes(name)) {
+            throw new Error(`Invalid tree name ${name}`);
+        }
+        if (this.clicks < this.trees[name].price) {
+            return false;
+        }
+        this.clicks -= this.trees[name].price;
+        this.trees[name].purchased += 1;
+    }
+
+    toJSON() {
+        const json = Object.assign({}, this);
+        delete json["bus"];
+        return json;
+
+    }
+
+    static fromJSON(json) {
+        const clicker = new ClickerModel();
+        const clickerInstance = Object.assign(clicker, json);
+        return clickerInstance;
     }
 }
