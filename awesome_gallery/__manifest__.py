@@ -14,13 +14,13 @@
     'category': 'Tutorials/AwesomeGallery',
     'installable': True,
     'depends': ['web', 'contacts'],
-    'data': [
-        'views/views.xml',
-    ],
     'assets': {
         'web.assets_backend': [
             'awesome_gallery/static/src/**/*',
         ],
     },
+    'data': [
+        'views/views.xml',
+    ],
     'license': 'AGPL-3'
 }

@@ -2,10 +2,12 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "./click_rewards";
 import { choose } from "./utils";
+import { CURRENT_VERSION } from "./clicker_migration";
 
 export class ClickerModel extends Reactive {
     constructor() {
         super();
+        this.version = CURRENT_VERSION;
         this.clicks = 0;
         this.level = 0;
         // this.clickBots = 0;
@@ -46,10 +48,17 @@ export class ClickerModel extends Reactive {
                 produce: "cherry",
                 purchased: 0,
             },
+            peachTree: {
+                price: 1000000,
+                level: 4,
+                produce: "peach",
+                purchased: 0,
+            },
         }
         this.fruits = {
             pear: 0,
             cherry: 0,
+            peach: 0,
         }
         this.ticks = 0;
     }

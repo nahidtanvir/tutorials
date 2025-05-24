@@ -1,12 +1,13 @@
 import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
 import { browser } from "@web/core/browser/browser";
+import { migrate } from "./clicker_migration";
 
 const clickerService = {
     dependencies: ["effect", "action", "notification"],
     start(env, services) {
         // const model = new ClickerModel();
-        const localState = JSON.parse(browser.localStorage.getItem("clickerState"));
+        const localState = migrate(JSON.parse(browser.localStorage.getItem("clickerState")));
         const model = localState ? ClickerModel.fromJSON(localState): new ClickerModel();
 
         document.addEventListener("click", () => model.addClick(), true);
